@@ -1,0 +1,13 @@
+server:
+  port: 81
+
+application:
+  http-client:
+    zomato:
+      url: https://developers.zomato.com/api/v2.1
+      common-categories:
+        uri: /categories
+      common-cuisines:
+        uri: /cuisines
+      location-locations:
+        uri: /locations

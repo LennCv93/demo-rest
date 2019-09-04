@@ -13,14 +13,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class Swagger2Config {
-  public Docket api(){
+  public Docket api() {
     return new Docket(DocumentationType.SWAGGER_2)
       .select().apis(RequestHandlerSelectors.basePackage("pe.demo.api.demorest.expose.web"))
       .paths(PathSelectors.regex("/.*"))
       .build().apiInfo(apiEndpointsInfo());
   }
 
-  private ApiInfo apiEndpointsInfo(){
+  private ApiInfo apiEndpointsInfo() {
     return new ApiInfoBuilder().title("Demo API Rest")
       .description("Demo")
       .contact(new Contact("Lennin Cubas", "", "valcubaslr@gmail.com")).version("v1.0")

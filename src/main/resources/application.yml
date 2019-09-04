@@ -11,3 +11,5 @@ application:
         uri: /cuisines
       location-locations:
         uri: /locations
+      restaurant-search:
+        uri: /search

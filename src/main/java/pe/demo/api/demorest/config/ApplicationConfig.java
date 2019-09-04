@@ -17,4 +17,6 @@ public class ApplicationConfig {
   private String uriCommonCuisines;
   @Value("${application.http-client.zomato.location-locations.uri}")
   private String uriLocationLocations;
+  @Value("${application.http-client.zomato.restaurant-search.uri}")
+  private String uriRestaurantSearch;
 }

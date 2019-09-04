@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import pe.demo.api.demorest.business.CategoryService;
 import pe.demo.api.demorest.business.CuisinesService;
 import pe.demo.api.demorest.business.LocationService;
+import pe.demo.api.demorest.business.RestaurantService;
 import pe.demo.api.demorest.model.api.CategoryResponse;
 import pe.demo.api.demorest.model.api.CuisinesResponse;
 import pe.demo.api.demorest.model.api.LocationResponse;
+import pe.demo.api.demorest.model.api.SearchResponse;
 
-@Api(value="Demo API Rest")
+@Api(value = "Demo API Rest")
 @RestController
 @RequestMapping("/demo/api/v1")
 @Slf4j
@@ -24,6 +26,8 @@ public class DemoController {
   private CuisinesService cuisinesService;
   @Autowired
   private LocationService locationService;
+  @Autowired
+  private RestaurantService restaurantService;
 
   @GetMapping(
     value = "/categories",
@@ -39,7 +43,7 @@ public class DemoController {
     @ApiResponse(code = 403, message = "Forbidden"),
     @ApiResponse(code = 404, message = "Not found resource")
   })
-  public CategoryResponse getCategories(@RequestHeader(value = "api-key", required = true) final String apikey){
+  public CategoryResponse getCategories(@RequestHeader(value = "api-key", required = true) final String apikey) {
     log.info("Enter endpoint-> /getCategories - GET");
     CategoryResponse result = this.categoryService.getCategories(apikey);
     log.info("End endpoint-> /getCategories - GET");
@@ -61,12 +65,12 @@ public class DemoController {
     @ApiResponse(code = 404, message = "Not found resource")
   })
   public CuisinesResponse getCuisines(@RequestHeader(value = "api-key", required = true) final String apikey,
-                                      @ApiParam(value = "City Identificator", example =  "280", required = true)
+                                      @ApiParam(value = "City Identificator", example = "280", required = true)
                                       @RequestParam(value = "city_id") Integer cityId,
                                       @ApiParam(value = "Latitude", example = "00.00000")
                                       @RequestParam(value = "lat", required = false) Double lat,
                                       @ApiParam(value = "Longitude", example = "00.00000")
-                                      @RequestParam(value = "lon", required = false) Double lon){
+                                      @RequestParam(value = "lon", required = false) Double lon) {
     log.info("Enter endpoint-> /cuisines - GET");
     CuisinesResponse result = this.cuisinesService.getCuisines(apikey, cityId, lat, lon);
     log.info("End endpoint-> /cuisines - GET");
@@ -87,16 +91,45 @@ public class DemoController {
     @ApiResponse(code = 403, message = "Forbidden"),
     @ApiResponse(code = 404, message = "Not found resource")
   })
-  public LocationResponse geLocations(@RequestHeader(value = "api-key", required = true) final String apikey,
-                                      @ApiParam(value = "Location Name", example =  "New York", required = true)
-                                      @RequestParam("query") String query,
-                                      @ApiParam(value = "Latitude", example = "00.00000")
-                                      @RequestParam(value = "lat", required = false) Double lat,
-                                      @ApiParam(value = "Longitude", example = "00.00000")
-                                      @RequestParam(value = "lon", required = false) Double lon){
+  public LocationResponse getLocations(@RequestHeader(value = "api-key", required = true) final String apikey,
+                                       @ApiParam(value = "Location Name", example = "New York", required = true)
+                                       @RequestParam("query") String query,
+                                       @ApiParam(value = "Latitude", example = "00.00000")
+                                       @RequestParam(value = "lat", required = false) Double lat,
+                                       @ApiParam(value = "Longitude", example = "00.00000")
+                                       @RequestParam(value = "lon", required = false) Double lon) {
     log.info("Enter endpoint-> /locations - GET");
     LocationResponse result = this.locationService.getLocations(apikey, query, lat, lon);
     log.info("End endpoint-> /locations - GET");
+    return result;
+  }
+
+  @GetMapping(
+    value = "/search-restaurant",
+    produces = MediaType.APPLICATION_JSON_VALUE)
+  @ApiOperation(
+    value = "Search Restaurants",
+    produces = MediaType.APPLICATION_JSON_VALUE,
+    httpMethod = "GET",
+    response = SearchResponse.class)
+  @ApiResponses({
+    @ApiResponse(code = 200, message = "Process Successful"),
+    @ApiResponse(code = 401, message = "Not Authorized"),
+    @ApiResponse(code = 403, message = "Forbidden"),
+    @ApiResponse(code = 404, message = "Not found resource")
+  })
+  public SearchResponse searchRestaurants(@RequestHeader(value = "api-key", required = true) final String apikey,
+                                          @ApiParam(value = "Latitude", example = "00.00000")
+                                          @RequestParam(value = "lat", required = false) Double lat,
+                                          @ApiParam(value = "Longitude", example = "00.00000")
+                                          @RequestParam(value = "lon", required = false) Double lon,
+                                          @ApiParam(value = "cuisines", example = "23")
+                                          @RequestParam(value = "cuisines", required = false) String cuisines,
+                                          @ApiParam(value = "category", example = "21")
+                                          @RequestParam(value = "category", required = false) String category) {
+    log.info("Enter endpoint-> /search-restaurant - GET");
+    SearchResponse result = this.restaurantService.searchRestaurants(apikey, lat, lon, cuisines, category);
+    log.info("End endpoint-> /search-restaurant - GET");
     return result;
   }
 

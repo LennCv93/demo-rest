@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1433;databaseName=demo
+    username: sa
+    password: sqluseradmin
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 81
+
+application:
+  http-client:
+    zomato:
+      url: https://developers.zomato.com/api/v2.1
+      common-categories:
+        uri: /categories
+      common-cuisines:
+        uri: /cuisines
+      location-locations:
+        uri: /locations
+      restaurant-search:
+        uri: /search
+      restaurant-restaurant:
+        uri: /restaurant
